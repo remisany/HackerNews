@@ -23,7 +23,7 @@ h1 {
 }
 
 span {
-  color: rgba(0, 0, 0, .5)
+  color: rgba(0, 0, 0, .5);
 }
 
 body {
@@ -66,6 +66,6 @@ body {
 
   #root {
     padding: 3rem 5rem;
-    min-width: 60vw
+    min-width: 60vw;
   }
 }

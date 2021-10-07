@@ -23,7 +23,7 @@ const CONTENT = styled.div`
 */
 
 function Story ({ position, content }) {
-    const { title, url, score, by, time, descendants} = content;
+    const { title, url, score, by, time, descendants } = content;
 
     let link = "";
     let date = "";
@@ -32,12 +32,12 @@ function Story ({ position, content }) {
         //Return url if it exists
         if (url !== undefined) {
             link = new URL(url);
-        }
+        };
 
         //Return an hour (post time - current time) if date exists
         if (date !== undefined) {
             date = new Date(new Date() - new Date (time*1000)).getHours();
-        }
+        };
     }, []);
 
     return (

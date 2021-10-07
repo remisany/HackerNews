@@ -31,12 +31,12 @@ const FOOTER = styled.footer`
 */
 
 function HomePage () {
-  const [storiesIds, setStoriesIds] = useState([])
-  const [stories, setStories] = useState([])
-  const [dataLoading, setDataLoading] = useState(false)
-  const [start, setStart] = useState(0)
-  const [update, setUpdate] = useState(false)
-  const [error, setError] = useState(false)
+  const [storiesIds, setStoriesIds] = useState([]);
+  const [stories, setStories] = useState([]);
+  const [dataLoading, setDataLoading] = useState(false);
+  const [start, setStart] = useState(0);
+  const [update, setUpdate] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     //Fetch stories ids
@@ -46,38 +46,38 @@ function HomePage () {
           .get("https://hacker-news.firebaseio.com/v0/topstories.json")
           .then(response => setStoriesIds(response.data))
       } catch (err) {
-        console.log(err)
-        setError(true)
-      }
-    }
+        console.log(err);
+        setError(true);
+      };
+    };
 
-    getStoriesIds()
+    getStoriesIds();
 
     //Refresh the list of posts every 30 seconds
     const interval = setInterval(() => getStoriesIds(), 30000);
     return () => {
       clearInterval(interval);
-    }
-  }, [update])
+    };
+  }, [update]);
 
   useEffect(() => {
-    setStories([])
+    setStories([]);
     //Fetch stories content
     async function getStory(storyId) {
-      setDataLoading(true)
+      setDataLoading(true);
       try {
         await axios
           .get(`https://hacker-news.firebaseio.com/v0/item/${storyId}.json`)
           .then(response => setStories(stories => [...stories, response.data]))
         } catch (err) {
-          console.log(err)
-          setError(true)
+          console.log(err);
+          setError(true);
         } finally {
-          setDataLoading(false)
-        }
-    }
-    storiesIds.slice(start, start+20).map(storyId => getStory(storyId))
-  }, [storiesIds, start])
+          setDataLoading(false);
+        };
+    };
+    storiesIds.slice(start, start+20).map(storyId => getStory(storyId));
+  }, [storiesIds, start]);
 
   return (
     <Fragment>
