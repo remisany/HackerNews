@@ -21,6 +21,7 @@ Please create the front page of Hacker News. How the application should look lik
 
 - [React](https://reactjs.org/) v17.0.2
 - [Styled-components](https://styled-components.com/) v5.3.1
+- [Axios](https://axios-http.com/docs/intro) v0.22.0
 
 #### Installation Dependencies
 
