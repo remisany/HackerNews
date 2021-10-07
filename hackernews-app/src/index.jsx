@@ -1,11 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-//Style
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom";
 
 //Pages
 import HomePage from "./pages/HomePage";
+
+//Style
+import './index.css';
 
 ReactDOM.render(
   <React.StrictMode>
