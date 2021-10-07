@@ -28,17 +28,13 @@ function Story ({ position, content }) {
     let link = "";
     let date = "";
 
-    useEffect(() => {
-        //Return url if it exists
-        if (url !== undefined) {
-            link = new URL(url);
-        };
+    if (url !== undefined) {
+        link = new URL(url);
+    }
 
-        //Return an hour (post time - current time) if date exists
-        if (date !== undefined) {
-            date = new Date(new Date() - new Date (time*1000)).getHours();
-        };
-    }, []);
+    if (date !== undefined) {
+        date = new Date(new Date() - new Date (time*1000)).getHours();
+    };
 
     return (
         <STORY>
@@ -46,7 +42,7 @@ function Story ({ position, content }) {
             <CONTENT>
                 <p>
                     <a href = {url}>{title} </a>
-                    <a href = {link.origin}>({link.host})</a>
+                    {link !== "" && <a href = {link.origin}>({link.host})</a>}
                 </p>
                 <p> {score} points <span>by</span> {by} <span>{date} hour ago</span> | {descendants} comments </p>
             </CONTENT>
