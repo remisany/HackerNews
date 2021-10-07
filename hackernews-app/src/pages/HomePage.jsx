@@ -5,6 +5,7 @@ import styled from "styled-components";
 //Components
 import Story from "../components/Story";
 import Loader from "../components/Loader";
+import Error from "../components/Error";
 
 const STORYCONTAINER = styled.div`
     display: flex;
@@ -30,50 +31,53 @@ const FOOTER = styled.footer`
 */
 
 function HomePage () {
-  const [storyIds, setStoryIds] = useState([])
-  const [storys, setStorys] = useState([])
+  const [storiesIds, setStoriesIds] = useState([])
+  const [stories, setStories] = useState([])
   const [dataLoading, setDataLoading] = useState(false)
   const [start, setStart] = useState(0)
   const [update, setUpdate] = useState(false)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     //Fetch stories ids
-    async function getStoryIds() {
+    async function getStoriesIds() {
       try {
         await axios
           .get("https://hacker-news.firebaseio.com/v0/topstories.json")
-          .then(response => setStoryIds(response.data))
+          .then(response => setStoriesIds(response.data))
       } catch (err) {
         console.log(err)
+        setError(true)
       }
     }
 
-    getStoryIds()
+    getStoriesIds()
 
     //Refresh the list of posts every 30 seconds
-    const interval = setInterval(() => getStoryIds(), 30000);
+    const interval = setInterval(() => getStoriesIds(), 30000);
     return () => {
       clearInterval(interval);
     }
   }, [update])
 
   useEffect(() => {
-    setStorys([])
+    setStories([])
     //Fetch stories content
     async function getStory(storyId) {
       setDataLoading(true)
       try {
         await axios
           .get(`https://hacker-news.firebaseio.com/v0/item/${storyId}.json`)
-          .then(response => setStorys(storys => [...storys, response.data]))
+          .then(response => setStories(stories => [...stories, response.data]))
         } catch (err) {
           console.log(err)
+          setError(true)
         } finally {
           setDataLoading(false)
         }
     }
-    storyIds.slice(start, start+20).map(storyId => getStory(storyId))
-  }, [storyIds, start])
+    storiesIds.slice(start, start+20).map(storyId => getStory(storyId))
+  }, [storiesIds, start])
 
   return (
     <Fragment>
@@ -82,18 +86,21 @@ function HomePage () {
         <i onClick = {() => setUpdate(!update)} className = "fas fa-redo-alt"></i>
       </HEADER>
       <main>
-        {dataLoading ?
-          <Loader />
+        {!error ?
+          dataLoading ?
+            <Loader />
+          :
+            <STORYCONTAINER>
+              {stories.map((story, index) => (
+                <Story
+                  key = {index}
+                  position = {start + index}
+                  content = {story}
+                />
+              ))}
+            </STORYCONTAINER>
         :
-          <STORYCONTAINER>
-            {storys.map((story, index) => (
-              <Story
-                key = {index}
-                position = {start + index}
-                content = {story}
-              />
-            ))}
-          </STORYCONTAINER>
+          <Error />
         }
       </main>
       {!dataLoading && (
